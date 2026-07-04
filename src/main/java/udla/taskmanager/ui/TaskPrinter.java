@@ -2,7 +2,6 @@ package udla.taskmanager.ui;
 
 import udla.taskmanager.model.Task;
 import udla.taskmanager.service.TaskService;
-
 import java.util.List;
 
 public class TaskPrinter {
