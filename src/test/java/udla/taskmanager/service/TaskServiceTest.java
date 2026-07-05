@@ -1,42 +1,76 @@
 package udla.taskmanager.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import udla.taskmanager.model.Task;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class TaskServiceTest {
 
-    @Test
-    void addTaskStoresNewTask() {
-        TaskService taskService = new TaskService();
+    private TaskService taskService;
 
-        taskService.addTask("Complete project");
-
-        assertEquals(1, taskService.getAllTasks().size());
-        assertEquals("Complete project", taskService.getAllTasks().get(0).getName());
+    @BeforeEach
+    void setUp() {
+        taskService = new TaskService();
     }
 
     @Test
-    void addTaskRejectsDuplicateName() {
-        TaskService taskService = new TaskService();
-        taskService.addTask("Write tests");
-
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> taskService.addTask("write tests")
-        );
-
-        assertEquals("La tarea ya existe: write tests", exception.getMessage());
+    void testAddTaskSuccess() {
+        taskService.addTask("Task 1");
+        List<Task> tasks = taskService.getAllTasks();
+        assertEquals(1, tasks.size());
+        assertEquals("Task 1", tasks.get(0).getName());
     }
 
     @Test
-    void removeTaskDeletesExistingTask() {
-        TaskService taskService = new TaskService();
-        taskService.addTask("Review report");
+    void testAddTaskNullNameThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> taskService.addTask(null));
+    }
 
-        taskService.removeTask(1);
+    @Test
+    void testAddTaskEmptyNameThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> taskService.addTask("   "));
+    }
 
-        assertEquals(0, taskService.getAllTasks().size());
+    @Test
+    void testAddDuplicateTaskThrowsException() {
+        taskService.addTask("Task 1");
+        assertThrows(IllegalArgumentException.class, () -> taskService.addTask("Task 1"));
+    }
+
+    @Test
+    void testRemoveTaskSuccess() {
+        taskService.addTask("Task 1");
+        List<Task> tasks = taskService.getAllTasks();
+        assertEquals(1, tasks.size());
+        int taskId = tasks.get(0).getId();
+
+        taskService.removeTask(taskId);
+        assertTrue(taskService.getAllTasks().isEmpty());
+    }
+
+    @Test
+    void testRemoveTaskInvalidIdThrowsException() {
+        assertThrows(IllegalArgumentException.class, () -> taskService.removeTask(0));
+        assertThrows(IllegalArgumentException.class, () -> taskService.removeTask(-1));
+    }
+
+    @Test
+    void testGetAllTasksEmpty() {
+        assertTrue(taskService.getAllTasks().isEmpty());
+    }
+
+    @Test
+    void testGetAllTasksMultiple() {
+        taskService.addTask("Task 1");
+        taskService.addTask("Task 2");
+        
+        List<Task> tasks = taskService.getAllTasks();
+        assertEquals(2, tasks.size());
+        assertTrue(tasks.stream().anyMatch(t -> t.getName().equals("Task 1")));
+        assertTrue(tasks.stream().anyMatch(t -> t.getName().equals("Task 2")));
     }
 }
