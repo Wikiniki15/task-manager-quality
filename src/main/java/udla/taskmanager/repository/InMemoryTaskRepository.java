@@ -8,13 +8,13 @@ public class InMemoryTaskRepository implements TaskRepository {
     private final List<Task> tasks = new ArrayList<>();
 
     @Override
-    public void save(Task task) {
+    public void save(final Task task) {
         tasks.add(task);
     }
 
     @Override
-    public void delete(int taskId) {
-        boolean removed = tasks.removeIf(
+    public void delete(final int taskId) {
+        final boolean removed = tasks.removeIf(
                 task -> task.getId() == taskId
         );
         if (!removed) {
@@ -30,7 +30,7 @@ public class InMemoryTaskRepository implements TaskRepository {
     }
 
     @Override
-    public boolean existsByName(String name) {
+    public boolean existsByName(final String name) {
         return tasks.stream()
                 .anyMatch(task -> task.getName().equalsIgnoreCase(name));
     }

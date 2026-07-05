@@ -13,18 +13,18 @@ public class TaskService {
         this.taskRepository = new InMemoryTaskRepository();
     }
 
-    public void addTask(String taskName) {
+    public void addTask(final String taskName) {
         validateTaskName(taskName);
         if (taskRepository.existsByName(taskName)) {
             throw new IllegalArgumentException(
                     "La tarea ya existe: " + taskName
             );
         }
-        Task newTask = new Task(nextId++, taskName);
+        final Task newTask = new Task(nextId++, taskName);
         taskRepository.save(newTask);
     }
 
-    public void removeTask(int taskId) {
+    public void removeTask(final int taskId) {
         if (taskId <= 0) {
             throw new IllegalArgumentException(
                     "El ID debe ser mayor a 0. ID recibido: " + taskId
@@ -37,7 +37,7 @@ public class TaskService {
         return taskRepository.findAll();
     }
 
-    private void validateTaskName(String taskName) {
+    private void validateTaskName(final String taskName) {
         if (taskName == null || taskName.trim().isEmpty()) {
             throw new IllegalArgumentException(
                     "El nombre de la tarea no puede ser nulo o vacío."
