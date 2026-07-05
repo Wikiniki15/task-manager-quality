@@ -4,9 +4,9 @@ import udla.taskmanager.service.TaskService;
 import udla.taskmanager.ui.TaskPrinter;
 
 public class Main {
-  public static void main(String[] args) {
-    TaskService taskService = new TaskService();
-    TaskPrinter printer = new TaskPrinter(taskService);
+  public static void main(final String[] args) {
+    final TaskService taskService = new TaskService();
+    final TaskPrinter printer = new TaskPrinter(taskService);
 
     taskService.addTask("Complete project");
     taskService.addTask("Write tests");
