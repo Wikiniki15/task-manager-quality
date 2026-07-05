@@ -49,7 +49,7 @@ class InMemoryTaskRepositoryTest {
         repository.save(task);
 
         assertTrue(repository.existsByName("Test Task"));
-        assertTrue(repository.existsByName("test task")); // Should be case insensitive as per implementation
+        assertTrue(repository.existsByName("test task"));
     }
 
     @Test
