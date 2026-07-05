@@ -4,7 +4,7 @@ public class Task {
   private final int id;
   private final String name;
 
-  public Task(int id, String name) {
+  public Task(final int id, final String name) {
     this.id = id;
     this.name = name;
   }

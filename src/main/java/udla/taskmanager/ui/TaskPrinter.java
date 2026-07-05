@@ -7,12 +7,12 @@ import java.util.List;
 public class TaskPrinter {
     private final TaskService taskService;
 
-    public TaskPrinter(TaskService taskService) {
+    public TaskPrinter(final TaskService taskService) {
         this.taskService = taskService;
     }
 
     public void printAllTasks() {
-        List<Task> tasks = taskService.getAllTasks();
+        final List<Task> tasks = taskService.getAllTasks();
         if (tasks.isEmpty()) {
             System.out.println("No hay tareas registradas.");
             return;
